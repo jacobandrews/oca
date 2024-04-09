@@ -162,7 +162,7 @@ function actualizarColoresDisponibles() {
         let colorSeleccionado = $(`#colorJugador${i + 1}`).val();
         coloresDisponibles = coloresDisponibles.filter(c => c.valor !== colorSeleccionado);
 
-        let dropdownItems = coloresDisponibles.map(c => `<a class="dropdown-item" href="#" onclick="seleccionarColor('${c.valor}', ${i + 1})" style="display: block; padding: 5px; line-height: 1;"><div class="ficha" style="background-color: ${c.valor}; width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-bottom: 5px;"></div></a>`).join('');
+        let dropdownItems = coloresDisponibles.map(c => `<a class="dropdown-item" href="#" onclick="seleccionarColor('${c.valor}', ${i + 1})" style="display: inline; padding: 5px; line-height: 1;"><div class="ficha" style="background-color: ${c.valor}; width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-bottom: 5px;"></div></a>`).join('');
 
         $(`#colorJugador${i + 1}`).next().html(dropdownItems);
     }
