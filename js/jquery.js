@@ -168,9 +168,6 @@ function actualizarColoresDisponibles() {
     }
 }
 
-
-
-
 // Función para colocar los botones, los datos actuales del juego y las fichas en la casilla de salida
 function iniciarJuego() {
     turno = 0;
@@ -281,7 +278,13 @@ function reproducirSonidoDado() {
 // Función para mover la ficha
 function moverFicha(index) {
     // Genera un número aleatorio entre 1 y 6 para los movimientos
-    let movimientos = Math.floor(Math.random() * 6) + 1;
+    let movimientos = 0;
+    if(index==3){
+        movimientos = 3;
+    }
+    else{
+        movimientos = Math.floor(Math.random() * 6) + 1;
+    }
     let resultadoDado = $('#resultadoDado' + index);
     let btnTirarDado = $(`#btnTirarDado${index}`);
 
@@ -343,12 +346,10 @@ function moverFicha(index) {
         if(jugador.jugando) ganador(jugador); /** Mark - Ejecutando funciones que hay que ejecutar cuando un jugador gana */
     }
 
-    // Cambiar el turno al siguiente jugador
-    jugador.turno = false;
     /** Mark - Si el jugador que toca ganó ya, saltamos al siguente */
     turno = determinarTurno(jugadores, turno);
     if(turno == -1){
-        finalizarParido();
+        finalizarPartido();
     }
     else{
         jugadores[turno].turno = true;
@@ -367,10 +368,6 @@ function actualizarBotonesTurno() {
         }
     }
 }
-
-
-
-
 
 //FUNCIÓN PARA REPRODUCIR SONIDO DE MOVIMIENTO DE FICHA
 function reproducirSonidoMovimiento() {
@@ -471,17 +468,19 @@ function determinarTurno(jugadores, turno){
     if (ganadores >= numJugadores){
        return -1;
     } else {
+        jugadores[turno].turno = false;
         turno = (turno + 1) % numJugadores;
         if(jugadores[turno].jugando == false){
             jugadores[turno].turno == false;
             return determinarTurno(jugadores, turno);
         }
         else{
+            jugadores[turno].turno == true;
             return turno;
         }
     }
  }
 
- function finalizarParido(){
+ function finalizarPartido(){
 
  }
