@@ -279,22 +279,27 @@ function reproducirSonidoDado() {
 function moverFicha(index) {
     // Genera un número aleatorio entre 1 y 6 para los movimientos
     let movimientos = 0;
-    if(index==3){
+    movimientos = Math.floor(Math.random() * 6) + 1;
+
+    /** Mark - Codigo para agilizar el testing
+    if(index==0){
         movimientos = 3;
     }
     else{
-        movimientos = Math.floor(Math.random() * 6) + 1;
-    }
+        movimientos = 6;
+    } */
     let resultadoDado = $('#resultadoDado' + index);
     let btnTirarDado = $(`#btnTirarDado${index}`);
 
     btnTirarDado.html(`<img src="img/dice.gif" alt="Dado" style="width: 50px; height: 50px;">`); // Reproduce el GIF del dado
     reproducirSonidoDado(); // Reproduce el sonido del dado
-
-    setTimeout(() => {
-        btnTirarDado.html(`<img src="img/${movimientos}.png" alt="${movimientos}" style="width: 50px; height: 50px;">`);
-    }, 100);  // Reducido el tiempo de espera a 100 milisegundos (0.1 segundos)
-
+    
+    // Mark - Este codígo está fallando en que no deja al último jugador jugar dos veces.
+    /**  
+            setTimeout(() => {
+                btnTirarDado.html(`<img src="img/${movimientos}.png" alt="${movimientos}" style="width: 50px; height: 50px;">`);
+            }, 100);  // Reducido el tiempo de espera a 100 milisegundos (0.1 segundos)
+        */
     let jugador = jugadores[index];
 
     for (let i = 0; i < movimientos; i++) {
@@ -324,7 +329,7 @@ function moverFicha(index) {
                 $(`#casilla${index}`).text(jugador.posicion + 1);
 
                 // Actualizar la visibilidad del botón de tirar dado
-                if (jugador.posicion >= tablero.length - 1 || !jugador.turno) {
+               if (jugador.posicion >= tablero.length - 1 || !jugador.turno) {
                     btnTirarDado.hide();
                 } else {
                     btnTirarDado.show();
@@ -352,22 +357,11 @@ function moverFicha(index) {
         finalizarPartido();
     }
     else{
-        jugadores[turno].turno = true;
         // Actualizar los botones de tirar dado
         actualizarBotonesTurno();
     }
 }
 
-// Función para actualizar los botones de tirar dado
-function actualizarBotonesTurno() {
-    for (let i = 0; i < numJugadores; i++) {
-        if (jugadores[i].turno && jugadores[i].posicion < tablero.length - 1) {
-            $(`#btnTirarDado${i}`).show();
-        } else {
-            $(`#btnTirarDado${i}`).hide();
-        }
-    }
-}
 
 //FUNCIÓN PARA REPRODUCIR SONIDO DE MOVIMIENTO DE FICHA
 function reproducirSonidoMovimiento() {
@@ -464,18 +458,18 @@ function ganador(jugador) {
     ganadores = ganadores + 1;
 }
 
-function determinarTurno(jugadores, turno){
+ function determinarTurno(jugadores, turno){
     if (ganadores >= numJugadores){
        return -1;
     } else {
         jugadores[turno].turno = false;
         turno = (turno + 1) % numJugadores;
         if(jugadores[turno].jugando == false){
-            jugadores[turno].turno == false;
+            jugadores[turno].turno = false;
             return determinarTurno(jugadores, turno);
         }
         else{
-            jugadores[turno].turno == true;
+            jugadores[turno].turno = true;
             return turno;
         }
     }
